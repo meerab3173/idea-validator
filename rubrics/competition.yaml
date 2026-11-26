@@ -1,0 +1,22 @@
+dimension: competition
+version: 1
+scale: 0-5
+question: "How much room is there to enter, given direct competitors in the knowledge base?"
+anchors:
+  5: "No direct competitor in the knowledge base for this user and problem."
+  4: "One or two small or inactive competitors (no funding, few stars, no recent launches)."
+  3: "A few active competitors but none dominant; a niche is open."
+  2: "Several active, funded competitors; entry needs a clear angle."
+  1: "A dominant product plus many clones."
+  0: "Saturated niche: many funded competitors and falling launches."
+features: [n_direct_competitors, competitor_funding_usd, niche_saturation, niche_trend_slope]
+output_schema: [score, confidence, evidence_ids, reason]
+rules:
+  - "A competitor must be a card in the knowledge base; name it by card id."
+examples:
+  - { level: 5, input: "Urdu speech-to-notes for lectures; no matching cards", expected: { score: 5 } }
+  - { level: 4, input: "Lab-viva question bank; 2 small GitHub repos, inactive", expected: { score: 4 } }
+  - { level: 3, input: "Hackathon team matcher; 4 small active tools", expected: { score: 3 } }
+  - { level: 2, input: "Habit tracker for students; 8 active apps, 2 funded", expected: { score: 2 } }
+  - { level: 1, input: "Notes app; Notion dominant plus many clones", expected: { score: 1 } }
+  - { level: 0, input: "Generic AI chat wrapper; saturated, falling launches", expected: { score: 0 } }

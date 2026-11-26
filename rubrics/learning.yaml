@@ -1,0 +1,20 @@
+dimension: learning
+version: 1
+scale: 0-5
+question: "Does it teach skills the student wants and show well on a CV?"
+anchors:
+  5: "Uses 2+ skills from the student's interests/wanted list, deployable demo, strong CV story."
+  4: "One wanted skill plus a deployable demo."
+  3: "Mostly known skills, but a complete, demoable product."
+  2: "Little new learning, weak demo."
+  1: "Tutorial-level project."
+  0: "Nothing new, nothing to show."
+features: [wanted_skill_overlap, demo_ready, novelty]
+output_schema: [score, confidence, evidence_ids, reason]
+examples:
+  - { level: 5, input: "RAG + Kubernetes deployed product for a student who wants MLOps", expected: { score: 5 } }
+  - { level: 4, input: "React Native app for a student wanting mobile", expected: { score: 4 } }
+  - { level: 3, input: "Full-stack CRUD app the team already knows how to build", expected: { score: 3 } }
+  - { level: 2, input: "Static landing page", expected: { score: 2 } }
+  - { level: 1, input: "Todo list from a tutorial", expected: { score: 1 } }
+  - { level: 0, input: "Copy of an existing repo", expected: { score: 0 } }

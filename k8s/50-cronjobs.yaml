@@ -1,0 +1,142 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scout-hn
+  namespace: idea-validator
+spec:
+  schedule: 0 */6 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: job-scouts
+            part-of: idea-validator
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: job
+            image: idea-validator/scouts:dev
+            imagePullPolicy: IfNotPresent
+            command:
+            - python
+            - -m
+            - src.main
+            - --source
+            - hn
+            - --pages
+            - '2'
+            envFrom:
+            - configMapRef:
+                name: app-config
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 10001
+            env:
+            - name: RAW_DIR
+              value: /tmp/raw
+      backoffLimit: 2
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scout-github
+  namespace: idea-validator
+spec:
+  schedule: 30 2 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: job-scouts
+            part-of: idea-validator
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: job
+            image: idea-validator/scouts:dev
+            imagePullPolicy: IfNotPresent
+            command:
+            - python
+            - -m
+            - src.main
+            - --source
+            - github
+            - --pages
+            - '2'
+            envFrom:
+            - configMapRef:
+                name: app-config
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 10001
+            env:
+            - name: RAW_DIR
+              value: /tmp/raw
+      backoffLimit: 2
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ingestion
+  namespace: idea-validator
+spec:
+  schedule: 0 3 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: job-scouts
+            part-of: idea-validator
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: job
+            image: idea-validator/scouts:dev
+            imagePullPolicy: IfNotPresent
+            command:
+            - python
+            - -m
+            - src.pipeline
+            - --sources
+            - hn
+            - github
+            - yc
+            - --pages
+            - '2'
+            envFrom:
+            - configMapRef:
+                name: app-config
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 10001
+            env:
+            - name: RAW_DIR
+              value: /tmp/raw
+      backoffLimit: 2

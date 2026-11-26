@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-server
+  namespace: idea-validator
+  labels: &id001
+    app: model-server
+    part-of: idea-validator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-server
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: *id001
+    spec:
+      containers:
+      - name: model-server
+        image: idea-validator/model-server:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 11434
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 11434
+          initialDelaySeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 11434
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1536Mi
+          limits:
+            cpu: '2'
+            memory: 3Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-server
+  namespace: idea-validator
+spec:
+  selector:
+    app: model-server
+  ports:
+  - port: 11434
+    targetPort: 11434

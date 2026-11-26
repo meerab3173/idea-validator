@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: idea-validator
+data:
+  REDIS_URL: redis://redis:6379/0
+  LLM_BASE_URL: http://tools:8000/llm/v1
+  LLM_UPSTREAM: https://api.groq.com/openai/v1
+  LLM_MODEL: llama-3.1-8b-instant
+  RUBRIC_SET: r1
+  WEIGHTS_VERSION: w1
+  MODEL_TAG: scorer-lora@v1
+  ALLOW_LIST: hacker-news.firebaseio.com=5,hn.algolia.com=2,api.github.com=0.5,oauth.reddit.com=0.5,api.producthunt.com=0.5,yc-oss.github.io=1,api.groq.com=2
+  MAX_PAGES_PER_RUN: '200'
+  RATE_RUNS: '10'
+  RATE_DEFAULT: '120'
+  CORS_ORIGINS: '*'

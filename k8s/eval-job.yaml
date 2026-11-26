@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: eval-
+  namespace: idea-validator
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: job-eval
+        part-of: idea-validator
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: eval
+        image: idea-validator/evaluation:dev
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: app-config
+        env:
+        - name: GATEWAY_URL
+          value: http://gateway:8000
+        - name: RESULTS_DIR
+          value: /data/eval-results
+        - name: EVAL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: EVAL_PASSWORD
+              optional: true
+        volumeMounts:
+        - name: traces
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      volumes:
+      - name: traces
+        persistentVolumeClaim:
+          claimName: traces

@@ -1,0 +1,16 @@
+# Prompt and rubric registry (M13). Every verdict records `set`.
+# Change any rubric => bump its version here AND in the file, bump `set`, re-run eval.
+set: r1
+rubrics:
+  demand_pain: 1
+  competition: 1
+  differentiation: 1
+  feasibility: 1
+  risk: 1
+  learning: 1
+prompts:
+  scorer_system: 1
+  ideator: 1
+  gap_analyst: 1
+  skeptic: 1
+  critic: 1

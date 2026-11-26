@@ -1,0 +1,19 @@
+# Per-run budgets (M13), enforced in the orchestrator (M3) and tool layer (M5).
+version: b1
+validate:
+  max_cost_usd: 0.05
+  max_tokens: 40000
+  max_pages: 30
+  max_steps: 60
+discover:
+  max_cost_usd: 0.25
+  max_tokens: 200000
+  max_pages: 80
+  max_steps: 300
+deep_search:
+  pages: 20
+  est_cost_per_page_usd: 0.002   # embeddings + extra scoring per page
+retries: 2
+timeout_s: 120
+max_debate_rounds: 3
+max_clarifying_questions: 2

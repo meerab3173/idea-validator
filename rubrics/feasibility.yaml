@@ -1,0 +1,20 @@
+dimension: feasibility
+version: 1
+scale: 0-5
+question: "Can THIS student build it with their hours, skills and compute, with margin?"
+anchors:
+  5: "Estimated effort under 50% of available hours; all core skills present; laptop compute is enough."
+  4: "Effort 50-70% of hours; one minor new skill."
+  3: "Effort 70-90% of hours, or one major new skill."
+  2: "Effort 90-100% of hours, or two major new skills, or needs GPU they lack."
+  1: "Effort slightly above hours (gate may still pass with scope cuts)."
+  0: "Clearly impossible for this team in this time."
+features: [estimated_hours, available_hours, hours_ratio, skill_overlap, compute_need]
+output_schema: [score, confidence, evidence_ids, reason]
+examples:
+  - { level: 5, input: "CRUD web app, team knows React+Postgres, 240 h available, ~90 h estimate", expected: { score: 5 } }
+  - { level: 4, input: "Same app plus a simple ML model they have not used", expected: { score: 4 } }
+  - { level: 3, input: "Mobile app in Flutter, nobody knows Flutter", expected: { score: 3 } }
+  - { level: 2, input: "Real-time multiplayer game, needs GPU training", expected: { score: 2 } }
+  - { level: 1, input: "Full marketplace with payments, 260 h vs 240 h", expected: { score: 1 } }
+  - { level: 0, input: "Self-driving robot, solo, 20 h", expected: { score: 0 } }

@@ -1,0 +1,20 @@
+dimension: differentiation
+version: 1
+scale: 0-5
+question: "Is there a clear gap that existing products do not address?"
+anchors:
+  5: "A specific, evidenced gap (missing feature or unserved user) that no card covers."
+  4: "A clear gap partly covered by one product."
+  3: "A distinct angle (user segment, locale, price) with some evidence."
+  2: "Small improvements on existing products."
+  1: "Cosmetic differences only."
+  0: "A renamed copy of an existing product."
+features: [gap_matches, complaint_overlap_with_competitors, unique_feature_count]
+output_schema: [score, confidence, evidence_ids, reason]
+examples:
+  - { level: 5, input: "Offline-first attendance for low-connectivity campuses; complaints cite outages, no competitor offline", expected: { score: 5 } }
+  - { level: 4, input: "Invoice tool with PKR tax rules; one competitor has partial support", expected: { score: 4 } }
+  - { level: 3, input: "Recipe app focused on hostel students' budgets", expected: { score: 3 } }
+  - { level: 2, input: "Todo app with slightly nicer UI", expected: { score: 2 } }
+  - { level: 1, input: "Same todo app in a different colour", expected: { score: 1 } }
+  - { level: 0, input: "Clone of Trello with a new name", expected: { score: 0 } }

@@ -1,0 +1,58 @@
+# Local DEVELOPMENT only. The deployment target is Kubernetes (k8s/).
+# Usage: cp .env.example .env && docker compose up --build
+x-py: &py
+  restart: unless-stopped
+  env_file: .env
+  environment: &pyenv
+    DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD}@postgres:5432/ideas
+    KB_DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD}@postgres:5432/ideas
+    REDIS_URL: redis://redis:6379/0
+    LLM_BASE_URL: http://tools:8000/llm/v1
+    PROFILE_URL: http://profile:8000
+    SCOUTS_URL: http://scouts:8000
+    TRACE_DIR: /data/traces
+  depends_on: [postgres, redis]
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment: { POSTGRES_USER: app, POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}", POSTGRES_DB: ideas }
+    volumes: [pgdata:/var/lib/postgresql/data]
+    ports: ["5432:5432"]
+  redis:
+    image: redis:7.4-alpine
+  gateway:
+    <<: *py
+    build: { context: ., dockerfile: services/gateway/Dockerfile }
+    ports: ["8080:8000"]
+  ui:
+    build: { context: services/ui }
+    environment: { API_URL: "http://localhost:8080" }
+    ports: ["3000:8080"]
+  profile:      { <<: *py, build: { context: ., dockerfile: services/profile/Dockerfile } }
+  orchestrator: { <<: *py, build: { context: ., dockerfile: services/orchestrator/Dockerfile } }
+  scouts:       { <<: *py, build: { context: ., dockerfile: services/scouts/Dockerfile } }
+  tools:        { <<: *py, build: { context: ., dockerfile: services/tools/Dockerfile } }
+  kb:           { <<: *py, build: { context: ., dockerfile: services/kb/Dockerfile } }
+  analyst:      { <<: *py, build: { context: ., dockerfile: services/analyst/Dockerfile } }
+  ideation:     { <<: *py, build: { context: ., dockerfile: services/ideation/Dockerfile } }
+  validators:   { <<: *py, build: { context: ., dockerfile: services/validators/Dockerfile } }
+  verdict:      { <<: *py, build: { context: ., dockerfile: services/verdict/Dockerfile } }
+  critic:       { <<: *py, build: { context: ., dockerfile: services/critic/Dockerfile } }
+  agentops:
+    <<: *py
+    build: { context: ., dockerfile: services/agentops/Dockerfile }
+    volumes: [traces:/data]
+    ports: ["8090:8000"]   # dashboard: http://localhost:8090/dashboard
+  scorer:
+    <<: *py
+    build: { context: ., dockerfile: services/scorer/Dockerfile }
+    environment:
+      <<: *pyenv
+      MODEL_URL: http://model-server:11434/v1
+      ALLOW_FALLBACK_ONLY: "true"   # until the fine-tuned model exists, use the hosted fallback
+  # Uncomment once models/scorer-q4_k_m.gguf exists (after fine-tuning):
+  # model-server:
+  #   build: { context: ., dockerfile: services/model-server/Dockerfile }
+
+volumes: { pgdata: {}, traces: {} }

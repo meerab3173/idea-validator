@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>AgenticOps dashboard</title>
+<style>
+ body{font:14px/1.5 system-ui,sans-serif;margin:24px;background:#f7f7f5;color:#222}
+ h1{font-size:20px;margin:0 0 16px} .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+ .tile{background:#fff;border:1px solid #e3e3e0;border-radius:8px;padding:12px}
+ .tile b{display:block;font-size:22px} table{border-collapse:collapse;background:#fff;margin-top:16px;width:100%}
+ td,th{border:1px solid #e3e3e0;padding:6px 10px;text-align:left} small{color:#666}
+</style></head><body>
+<h1>AgenticOps — Idea Validator <small id="ts"></small></h1>
+<div class="grid" id="tiles"></div>
+<table><thead><tr><th>Agent</th><th>Mean latency (ms)</th><th>p95 (ms)</th><th>Steps</th></tr></thead><tbody id="lat"></tbody></table>
+<table><thead><tr><th>Verdict</th><th>Count</th></tr></thead><tbody id="dist"></tbody></table>
+<script>
+async function load(){
+  const s = await (await fetch('summary')).json();
+  const tiles = [["Runs",s.runs],["Verdicts",s.verdicts],["Cost / verdict (USD)",s.cost_per_verdict_usd],
+    ["Cache hit rate",(s.cache_hit_rate*100).toFixed(1)+"%"],["Fallbacks",s.fallbacks],
+    ["Approvals requested",s.approvals_requested],["Blocked injections",s.blocked_injections],["Errors",s.errors]];
+  document.getElementById('tiles').innerHTML = tiles.map(([k,v])=>`<div class="tile">${k}<b>${v}</b></div>`).join('');
+  document.getElementById('lat').innerHTML = Object.entries(s.latency_ms_per_agent)
+    .map(([a,v])=>`<tr><td>${a}</td><td>${v.mean}</td><td>${v.p95}</td><td>${v.n}</td></tr>`).join('');
+  document.getElementById('dist').innerHTML = Object.entries(s.verdict_distribution)
+    .map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+  document.getElementById('ts').textContent = new Date().toLocaleTimeString();
+}
+load(); setInterval(load, 5000);
+</script></body></html>

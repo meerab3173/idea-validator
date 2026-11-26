@@ -1,0 +1,4 @@
+# Write 20+ queries against YOUR ingested cards. `relevant` = card ids you judged relevant by hand.
+queries:
+  - q: "slow export of large spreadsheets"
+    relevant: []   # fill in card ids, e.g. card_3fa91c0d2e

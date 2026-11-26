@@ -1,0 +1,20 @@
+dimension: risk
+version: 1
+scale: 0-5        # 5 = NO concern (higher is better)
+question: "Legal, privacy, safety or platform-dependency concerns?"
+anchors:
+  5: "No personal data, no regulated domain, no single-platform dependency."
+  4: "Minor personal data (emails) with standard protection."
+  3: "Depends on one third-party API that could change terms, or moderate personal data."
+  2: "Sensitive data (health, finance, minors) needing consent and compliance work."
+  1: "Scraping against terms, or heavy dependency on an API that bans this use."
+  0: "Clear legal or safety blocker (illegal, dangerous, violates platform terms)."
+features: [handles_personal_data, regulated_domain, platform_dependency, blockers]
+output_schema: [score, confidence, evidence_ids, reason]
+examples:
+  - { level: 5, input: "Offline unit converter", expected: { score: 5 } }
+  - { level: 4, input: "Study planner with email login", expected: { score: 4 } }
+  - { level: 3, input: "Tool built on the Reddit API", expected: { score: 3 } }
+  - { level: 2, input: "Mental-health journaling app for teenagers", expected: { score: 2 } }
+  - { level: 1, input: "LinkedIn profile scraper", expected: { score: 1 } }
+  - { level: 0, input: "App that bypasses paywalls", expected: { score: 0 } }

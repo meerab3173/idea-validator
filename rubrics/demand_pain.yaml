@@ -1,0 +1,23 @@
+dimension: demand_pain
+version: 1
+scale: 0-5        # higher is better for the student
+question: "How strong and widespread is the problem this idea solves?"
+anchors:
+  5: "Five or more independent sources on 2+ platforms describe the same recurring problem, with growth in the last 6 months."
+  4: "Four or more sources on 2+ platforms, problem clearly recurring, flat or slightly rising."
+  3: "Two or three sources show the problem, no clear growth."
+  2: "Two weak mentions, or several mentions on one platform only."
+  1: "A single weak or old (more than 18 months) mention."
+  0: "No evidence of the problem."
+features: [n_sources, n_platforms, complaint_count, trend_growth]
+output_schema: [score, confidence, evidence_ids, reason]
+rules:
+  - "Cite only evidence ids that appear in the EVIDENCE block."
+  - "If no evidence supports a score, reply {\"abstain\": true}."
+examples:
+  - { level: 5, input: "Study planner for exam season; 6 HN/Reddit threads complaining about scattered deadlines, rising mentions", expected: { score: 5, evidence_ids: ["card_a#c0", "card_b#c1"] } }
+  - { level: 4, input: "Invoice tool for freelancers; 4 sources across reddit and HN", expected: { score: 4 } }
+  - { level: 3, input: "Recipe scaler; 2 reddit threads and one HN comment", expected: { score: 3 } }
+  - { level: 2, input: "Plant-watering reminders; 2 posts in one subreddit", expected: { score: 2 } }
+  - { level: 1, input: "Fax-to-email bridge; one 2019 comment", expected: { score: 1 } }
+  - { level: 0, input: "Idea with no matching evidence", expected: { abstain: true } }

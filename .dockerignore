@@ -1,0 +1,11 @@
+.git
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/tests
+docs
+eval/results
+jobs/finetune/outputs
+*.gguf
+*.safetensors
+.env

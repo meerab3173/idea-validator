@@ -1,0 +1,63 @@
+note: CI fixture queries against data/snapshot/cards.sample.jsonl. Write 20 more against
+  your REAL cards in queries.real.yaml.
+queries:
+- q: slow csv export large files
+  relevant:
+  - card_5cc663dcad
+- q: search production logs
+  relevant:
+  - card_75781d82fb
+- q: mock backend api for frontend
+  relevant:
+  - card_2dda61f40d
+- q: preview environment per pull request
+  relevant:
+  - card_3151001f85
+- q: flashcards from lecture slides
+  relevant:
+  - card_e902e67ff9
+- q: viva oral exam practice
+  relevant:
+  - card_a28f48aa92
+- q: exam clash detection
+  relevant:
+  - card_faca9b6416
+- q: free riders in group assignments
+  relevant:
+  - card_53622584ac
+- q: split bills roommates
+  relevant:
+  - card_4d6537d297
+- q: freelancer invoice tax
+  relevant:
+  - card_93cdd51e67
+- q: sleep tracking without wearable
+  relevant:
+  - card_dc8167af18
+- q: clinic waiting time queue
+  relevant:
+  - card_b5b6df7de7
+- q: overselling inventory marketplaces
+  relevant:
+  - card_051b7dee92
+- q: compare prompt versions llm
+  relevant:
+  - card_64f64f61d2
+- q: retrieval quality evaluation rag
+  relevant:
+  - card_e419626450
+- q: urdu lecture transcription
+  relevant:
+  - card_9e6bfab6aa
+- q: campus esports tournament bracket
+  relevant:
+  - card_05c63e6581
+- q: student society sponsorship
+  relevant:
+  - card_03fdc970cb
+- q: student hostel comparison
+  relevant:
+  - card_4682f5bd40
+- q: missed parcel deliveries lockers
+  relevant:
+  - card_afd4cf3a61

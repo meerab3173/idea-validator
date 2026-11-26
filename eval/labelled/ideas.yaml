@@ -1,0 +1,34 @@
+# Labelled set for TUNING and MEASURING only (Guide Section 10). NEVER use these
+# ideas in fine-tuning data (jobs/finetune/build_dataset.py checks this file).
+# Target: 40+ ideas = clear GOs, clear NO-GOs, borderline, thin-evidence.
+# Both members label independently (label_m1, label_m2), then agree on `human`.
+# The entries below are STARTERS written for you — check, relabel and extend them.
+profiles:
+  solo_course: { user_id: eval_solo, skills: [python, sql], hours_per_week: 4, weeks_available: 10, team_size: 1, compute: laptop, goal: course_project, interests: [education] }
+  pair_portfolio: { user_id: eval_pair, skills: [react, sql, python], hours_per_week: 10, weeks_available: 12, team_size: 2, compute: free_gpu, goal: portfolio, interests: [devops, ml] }
+  team_startup: { user_id: eval_team, skills: [react, python, flutter], hours_per_week: 20, weeks_available: 16, team_size: 3, compute: paid, goal: startup, interests: [fintech] }
+ideas:
+  - { id: L01, profile: pair_portfolio, kind: clear_go,   human: GO,    label_m1: GO,    label_m2: GO,
+      idea: "A web dashboard for university students that imports exam timetables and warns about clashes and back-to-back papers early" }
+  - { id: L02, profile: solo_course,    kind: clear_nogo, human: NO-GO, label_m1: NO-GO, label_m2: NO-GO,
+      idea: "A two-sided food delivery marketplace with real-time rider tracking, payments and mobile apps for riders and restaurants" }
+  - { id: L03, profile: pair_portfolio, kind: clear_nogo, human: NO-GO, label_m1: NO-GO, label_m2: NO-GO,
+      idea: "A browser extension that lets students bypass paywalls on news and journal sites" }
+  - { id: L04, profile: pair_portfolio, kind: borderline, human: PIVOT, label_m1: PIVOT, label_m2: GO,
+      idea: "A generic habit tracker app for students with streaks and reminders" }
+  - { id: L05, profile: pair_portfolio, kind: thin,       human: INSUFFICIENT_EVIDENCE, label_m1: INSUFFICIENT_EVIDENCE, label_m2: INSUFFICIENT_EVIDENCE,
+      idea: "A tool for Balochi-language calligraphers to vectorise hand-drawn letters for print shops in Turbat" }
+  - { id: L06, profile: team_startup,   kind: clear_go,   human: GO,    label_m1: GO,    label_m2: PIVOT,
+      idea: "Invoice and withholding-tax helper for Pakistani freelancers who bill foreign clients, with PDF invoices and FBR-ready summaries" }
+  - { id: L07, profile: solo_course,    kind: clear_go,   human: GO,    label_m1: GO,    label_m2: GO,
+      idea: "A simple web app for lab demonstrators to pick random viva questions per lab task and record marks for each student" }
+  - { id: L08, profile: pair_portfolio, kind: clear_nogo, human: NO-GO, label_m1: NO-GO, label_m2: NO-GO,
+      idea: "A note-taking app with pages, databases and templates for teams, like Notion" }
+  - { id: L09, profile: pair_portfolio, kind: borderline, human: PIVOT, label_m1: PIVOT, label_m2: PIVOT,
+      idea: "A Discord bot for gaming societies that runs campus esports brackets and check-ins" }
+  - { id: L10, profile: solo_course,    kind: clear_nogo, human: NO-GO, label_m1: NO-GO, label_m2: NO-GO,
+      idea: "An Arduino robot that sorts recyclable waste using a camera and a trained vision model" }
+  - { id: L11, profile: pair_portfolio, kind: borderline, human: PIVOT, label_m1: GO,    label_m2: PIVOT,
+      idea: "A RAG chatbot over a university's course outlines that answers prerequisite and policy questions with citations" }
+  - { id: L12, profile: team_startup,   kind: thin,       human: INSUFFICIENT_EVIDENCE, label_m1: INSUFFICIENT_EVIDENCE, label_m2: PIVOT,
+      idea: "Subscription marketplace for renting traditional bridal jewellery in tier-3 Pakistani cities" }

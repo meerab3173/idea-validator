@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: idea-validator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        part-of: idea-validator
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.4.0-alpine
+        args:
+        - --maxmemory
+        - 128mb
+        - --maxmemory-policy
+        - allkeys-lru
+        ports:
+        - containerPort: 6379
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 192Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: idea-validator
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379

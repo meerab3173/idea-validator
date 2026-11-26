@@ -1,0 +1,64 @@
+# kubectl apply -k k8s/     (Jenkins overrides the tags with `kustomize edit set image`)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: idea-validator
+resources:
+  - 00-namespace.yaml
+  - 10-app-config.yaml
+  - 11-configmaps.generated.yaml
+  - 20-postgres.yaml
+  - 21-redis.yaml
+  - 22-volumes.yaml
+  - 30-gateway.yaml
+  - 30-ui.yaml
+  - 30-profile.yaml
+  - 30-orchestrator.yaml
+  - 30-scouts.yaml
+  - 30-tools.yaml
+  - 30-kb.yaml
+  - 30-analyst.yaml
+  - 30-ideation.yaml
+  - 30-validators.yaml
+  - 30-scorer.yaml
+  - 30-verdict.yaml
+  - 30-critic.yaml
+  - 30-agentops.yaml
+  - 31-model-server.yaml
+  - 40-gateway-hpa.yaml
+  - 41-ingress.yaml
+  - 50-cronjobs.yaml
+  - 51-jobs.yaml
+  - 60-networkpolicy.yaml
+images:
+  - name: idea-validator/gateway
+    newTag: dev
+  - name: idea-validator/ui
+    newTag: dev
+  - name: idea-validator/profile
+    newTag: dev
+  - name: idea-validator/orchestrator
+    newTag: dev
+  - name: idea-validator/scouts
+    newTag: dev
+  - name: idea-validator/tools
+    newTag: dev
+  - name: idea-validator/kb
+    newTag: dev
+  - name: idea-validator/analyst
+    newTag: dev
+  - name: idea-validator/ideation
+    newTag: dev
+  - name: idea-validator/validators
+    newTag: dev
+  - name: idea-validator/scorer
+    newTag: dev
+  - name: idea-validator/verdict
+    newTag: dev
+  - name: idea-validator/critic
+    newTag: dev
+  - name: idea-validator/agentops
+    newTag: dev
+  - name: idea-validator/model-server
+    newTag: dev
+  - name: idea-validator/evaluation
+    newTag: dev

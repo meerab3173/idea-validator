@@ -1,0 +1,16 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["services/ui", "jobs/finetune/train.py", "jobs/finetune/export.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E731", "E702", "E501", "I001"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+follow_imports = "silent"
+explicit_package_bases = true
+mypy_path = "libs/common"
+exclude = ["tests/", "services/ui/"]
